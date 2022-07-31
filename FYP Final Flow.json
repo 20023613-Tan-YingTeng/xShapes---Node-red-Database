@@ -7,15 +7,15 @@
         "info": ""
     },
     {
-        "id": "17e802767b1fca24",
+        "id": "",
         "type": "mqtt-broker",
-        "name": "JimMQTT",
-        "broker": "172.17.0.1",
-        "port": "1883",
+        "name": "",
+        "broker": "",
+        "port": "",
         "clientid": "",
         "autoConnect": true,
         "usetls": false,
-        "protocolVersion": "4",
+        "protocolVersion": "",
         "keepalive": "60",
         "cleansession": true,
         "birthTopic": "",
@@ -34,14 +34,14 @@
         "sessionExpiry": ""
     },
     {
-        "id": "4d09ade4ad78d32f",
+        "id": "",
         "type": "mqtt in",
-        "z": "0db769f5d8d5e736",
+        "z": "",
         "name": "",
         "topic": "deepstream",
         "qos": "1",
         "datatype": "auto",
-        "broker": "17e802767b1fca24",
+        "broker": "",
         "nl": false,
         "rap": true,
         "rh": 0,
@@ -50,8 +50,8 @@
         "y": 320,
         "wires": [
             [
-                "88a566ac6242dd0c",
-                "6014ba516fcc0955"
+                "",
+                ""
             ]
         ]
     },
