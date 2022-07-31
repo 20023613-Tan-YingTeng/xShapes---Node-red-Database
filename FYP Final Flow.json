@@ -1,0 +1,1091 @@
+[
+    {
+        "id": "0db769f5d8d5e736",
+        "type": "tab",
+        "label": "HTTP Rest API",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "17e802767b1fca24",
+        "type": "mqtt-broker",
+        "name": "JimMQTT",
+        "broker": "172.17.0.1",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "4d09ade4ad78d32f",
+        "type": "mqtt in",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "topic": "deepstream",
+        "qos": "1",
+        "datatype": "auto",
+        "broker": "17e802767b1fca24",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 90,
+        "y": 320,
+        "wires": [
+            [
+                "88a566ac6242dd0c",
+                "6014ba516fcc0955"
+            ]
+        ]
+    },
+    {
+        "id": "5610ef6d980e7199",
+        "type": "http request",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://xshapetest.azurewebsites.net/update",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1250,
+        "y": 100,
+        "wires": [
+            [
+                "afdabb85d819b2ce"
+            ]
+        ]
+    },
+    {
+        "id": "4d95f6cf6a7774b0",
+        "type": "inject",
+        "z": "0db769f5d8d5e736",
+        "name": "Circle 1",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "Circle 0 Heart 0 Square 0 Triangle 0 Beaker 0 Fire 0",
+        "payloadType": "str",
+        "x": 210,
+        "y": 960,
+        "wires": [
+            [
+                "87368803ca1f92cf"
+            ]
+        ]
+    },
+    {
+        "id": "87368803ca1f92cf",
+        "type": "mqtt out",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "topic": "deepstream",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "17e802767b1fca24",
+        "x": 490,
+        "y": 960,
+        "wires": []
+    },
+    {
+        "id": "f65683b9831bcf69",
+        "type": "debug",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1230,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "d949e31b432544ca",
+        "type": "function",
+        "z": "0db769f5d8d5e736",
+        "name": "Initialize Flow Context",
+        "func": "",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "// Code added here will be run once\n// whenever the node is started.\nflow.set(\"prevCircleCount\", );\nflow.set(\"prevHeartCount\", );\nflow.set(\"prevSquareCount\", );\nflow.set(\"prevTriangleCount\", );\nflow.set(\"prevBeakerCount\",);\nflow.set(\"prevFireCount\",);",
+        "finalize": "",
+        "libs": [],
+        "x": 180,
+        "y": 620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5b47868264c73b47",
+        "type": "function",
+        "z": "0db769f5d8d5e736",
+        "name": "Function",
+        "func": "let currCircle = msg.payload;\n//const availShapes = 4;\n\nlet objShapes =\n{\n  \"devKey\": \"1a0b530fb9152cacfe6bd2d831d63f23\",\n  \"itemId\": 2,\n  \"quantity\": 0\n  \n};\n\n\n\nif (flow.get(\"prevCircleCount\") != currCircle){\n    flow.set(\"prevCircleCount\", currCircle)\n    \n   // objShapes.restockAmt = currCircle;\n  objShapes.quantity = 2- currCircle;\n  msg.payload = objShapes;\n return msg;\n}\n\n\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 980,
+        "y": 100,
+        "wires": [
+            [
+                "f65683b9831bcf69",
+                "5610ef6d980e7199"
+            ]
+        ]
+    },
+    {
+        "id": "5891b6f967dbe40a",
+        "type": "change",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "rules": [
+            {
+                "t": "move",
+                "p": "payload.numCircle",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 100,
+        "wires": [
+            [
+                "449d3f285ac306ce"
+            ]
+        ]
+    },
+    {
+        "id": "88a566ac6242dd0c",
+        "type": "debug",
+        "z": "0db769f5d8d5e736",
+        "name": "Trevor",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 190,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "ec11586234da59c3",
+        "type": "inject",
+        "z": "0db769f5d8d5e736",
+        "name": "Circle 2",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "Circle 2 Heart 0 Square 0 Triangle 0 Beaker 0 Fire 0",
+        "payloadType": "str",
+        "x": 210,
+        "y": 1040,
+        "wires": [
+            [
+                "36622735f05572b1"
+            ]
+        ]
+    },
+    {
+        "id": "36622735f05572b1",
+        "type": "mqtt out",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "topic": "deepstream",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "17e802767b1fca24",
+        "x": 490,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "65bb79af75d5d72b",
+        "type": "debug",
+        "z": "0db769f5d8d5e736",
+        "name": "Circle ID4",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 960,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "196e67b9fe9c2798",
+        "type": "debug",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1230,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "b472d63ab5fc4226",
+        "type": "function",
+        "z": "0db769f5d8d5e736",
+        "name": "Function",
+        "func": "let currSquare = msg.payload;\n//const availShapes = 4;\n\nlet objShapes =\n{\n  \"devKey\": \"1a0b530fb9152cacfe6bd2d831d63f23\",\n  \"itemId\": 1,\n  \"quantity\": 0\n\n};\n\nif (flow.get(\"prevSquareCount\") != currSquare){\n    flow.set(\"prevSquareCount\", currSquare)\n    \n   // objShapes.restockAmt = currCircle;\n    objShapes.quantity = 4 - currSquare;\n    msg.payload = objShapes;\n return msg;\n}\n\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 980,
+        "y": 220,
+        "wires": [
+            [
+                "196e67b9fe9c2798",
+                "d0e79ea94eb9f213"
+            ]
+        ]
+    },
+    {
+        "id": "a9c8ab78c2b5a308",
+        "type": "change",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "rules": [
+            {
+                "t": "move",
+                "p": "payload.numSquare",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 220,
+        "wires": [
+            [
+                "8e13b542d5c2e48b"
+            ]
+        ]
+    },
+    {
+        "id": "6ce715edc5923f26",
+        "type": "debug",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1250,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "559aa2fdb014926f",
+        "type": "function",
+        "z": "0db769f5d8d5e736",
+        "name": "Function",
+        "func": "let currHeart = msg.payload;\n//const availShapes = 4;\n\nlet objShapes =\n{\n  \"devKey\": \"1a0b530fb9152cacfe6bd2d831d63f23\",\n  \"itemId\": 10,\n  \"quantity\": 0\n\n};\n\n\nif (flow.get(\"prevHeartCount\") != currHeart){\n    flow.set(\"prevHeartCount\", currHeart)\n    \n   // objShapes.restockAmt = currCircle;\n  objShapes.quantity = 2 - currHeart;\n  msg.payload = objShapes;\n return msg;\n}\n\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 980,
+        "y": 360,
+        "wires": [
+            [
+                "6ce715edc5923f26",
+                "2449dcf0cdf186b1"
+            ]
+        ]
+    },
+    {
+        "id": "b57b0baf0df9d4db",
+        "type": "change",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "rules": [
+            {
+                "t": "move",
+                "p": "payload.numHeart",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 560,
+        "y": 360,
+        "wires": [
+            [
+                "51871749840a527f"
+            ]
+        ]
+    },
+    {
+        "id": "b4303981e627b76f",
+        "type": "debug",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1250,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "a3d08e44a298ac73",
+        "type": "function",
+        "z": "0db769f5d8d5e736",
+        "name": "Function",
+        "func": "let currTriangle = msg.payload;\n//const availShapes = 4;\n\nlet objShapes =\n{\n  \"devKey\": \"1a0b530fb9152cacfe6bd2d831d63f23\",\n  \"itemId\": 9,\n  \"quantity\": 0\n\n};\nif (flow.get(\"prevTriangleCount\") != currTriangle){\n    flow.set(\"prevTriangleCount\", currTriangle)\n    \n   // objShapes.restockAmt = currCircle;\n  objShapes.quantity = 4 - currTriangle;\n  msg.payload = objShapes;\n return msg;\n}\n\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1000,
+        "y": 500,
+        "wires": [
+            [
+                "b4303981e627b76f",
+                "f9f5c0e863ae1caa"
+            ]
+        ]
+    },
+    {
+        "id": "3f39d78c9982cb56",
+        "type": "change",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "rules": [
+            {
+                "t": "move",
+                "p": "payload.numTriangle",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 500,
+        "wires": [
+            [
+                "73cfcea399afc5d6"
+            ]
+        ]
+    },
+    {
+        "id": "6014ba516fcc0955",
+        "type": "function",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "func": "let message = msg.payload;\n\nvar text = message.split(\" \");\nlet numCircle = parseInt(text[1]);\nlet numHeart = parseInt(text[3]);\nlet numSquare = parseInt(text[5]);\nlet numTriangle = parseInt(text[7]);\nlet numBeaker = parseInt(text[9]);\nlet numFire = parseInt(text[11])\n\nlet objShapes = \n{\n  \"numCircle\": numCircle,\n  \"numHeart\": numHeart, \n  \"numSquare\" : numSquare, \n  \"numTriangle\" : numTriangle, \n  \"numBeaker\" : numBeaker,\n  \"numFire\" : numFire\n};\n\nmsg.payload = objShapes;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 320,
+        "wires": [
+            [
+                "5891b6f967dbe40a",
+                "a9c8ab78c2b5a308",
+                "b57b0baf0df9d4db",
+                "3f39d78c9982cb56",
+                "4dbd5ea6d9049a7a",
+                "07caa63338c5d9f7"
+            ]
+        ]
+    },
+    {
+        "id": "a0b7b228dfbd9e60",
+        "type": "debug",
+        "z": "0db769f5d8d5e736",
+        "name": "Square ID 1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 950,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "c4e835d78b3969d4",
+        "type": "debug",
+        "z": "0db769f5d8d5e736",
+        "name": "Heart ID 3",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 970,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "402bd95cefce86fe",
+        "type": "debug",
+        "z": "0db769f5d8d5e736",
+        "name": "Triangle ID 2",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 990,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "8e13b542d5c2e48b",
+        "type": "smooth",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "property": "payload",
+        "action": "mean",
+        "count": "10",
+        "round": "0",
+        "mult": "single",
+        "reduce": true,
+        "x": 820,
+        "y": 220,
+        "wires": [
+            [
+                "b472d63ab5fc4226",
+                "a0b7b228dfbd9e60"
+            ]
+        ]
+    },
+    {
+        "id": "449d3f285ac306ce",
+        "type": "smooth",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "property": "payload",
+        "action": "mean",
+        "count": "10",
+        "round": "0",
+        "mult": "single",
+        "reduce": true,
+        "x": 820,
+        "y": 100,
+        "wires": [
+            [
+                "5b47868264c73b47",
+                "65bb79af75d5d72b"
+            ]
+        ]
+    },
+    {
+        "id": "51871749840a527f",
+        "type": "smooth",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "property": "payload",
+        "action": "mean",
+        "count": "10",
+        "round": "0",
+        "mult": "single",
+        "reduce": true,
+        "x": 820,
+        "y": 360,
+        "wires": [
+            [
+                "559aa2fdb014926f",
+                "c4e835d78b3969d4"
+            ]
+        ]
+    },
+    {
+        "id": "73cfcea399afc5d6",
+        "type": "smooth",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "property": "payload",
+        "action": "mean",
+        "count": "10",
+        "round": "0",
+        "mult": "single",
+        "reduce": true,
+        "x": 820,
+        "y": 500,
+        "wires": [
+            [
+                "a3d08e44a298ac73",
+                "402bd95cefce86fe"
+            ]
+        ]
+    },
+    {
+        "id": "b68889f7cacc1a18",
+        "type": "debug",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1250,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "2ac82321dda285c1",
+        "type": "function",
+        "z": "0db769f5d8d5e736",
+        "name": "Function",
+        "func": "let currBeaker = msg.payload;\n//const availShapes = 4;\n\nlet objShapes =\n{\n  \"devKey\": \"1a0b530fb9152cacfe6bd2d831d63f23\",\n  \"itemId\": 3,\n  \"quantity\": 0\n\n};\n\nif (flow.get(\"prevBeakerCount\") != currBeaker){\n  flow.set(\"prevBeakerCount\", currBeaker)\n    \n   // objShapes.restockAmt = currCircle;\n   objShapes.quantity = 1 - currBeaker;\n   msg.payload = objShapes;\n return msg;\n}\n\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 980,
+        "y": 620,
+        "wires": [
+            [
+                "b68889f7cacc1a18",
+                "ab70769eba4dde25"
+            ]
+        ]
+    },
+    {
+        "id": "4dbd5ea6d9049a7a",
+        "type": "change",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "rules": [
+            {
+                "t": "move",
+                "p": "payload.numBeaker",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 620,
+        "wires": [
+            [
+                "e59c448cb87b3b98"
+            ]
+        ]
+    },
+    {
+        "id": "33b49fe0fde693e4",
+        "type": "debug",
+        "z": "0db769f5d8d5e736",
+        "name": "Beaker ID 5",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 990,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "e59c448cb87b3b98",
+        "type": "smooth",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "property": "payload",
+        "action": "mean",
+        "count": "10",
+        "round": "0",
+        "mult": "single",
+        "reduce": true,
+        "x": 820,
+        "y": 620,
+        "wires": [
+            [
+                "2ac82321dda285c1",
+                "33b49fe0fde693e4"
+            ]
+        ]
+    },
+    {
+        "id": "6607c7c2c912552e",
+        "type": "debug",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1250,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "81852e1c7be8477d",
+        "type": "function",
+        "z": "0db769f5d8d5e736",
+        "name": "Function",
+        "func": "let currFire = msg.payload;\n//const availShapes = 4;\n\nlet objShapes =\n{\n  \"devKey\": \"1a0b530fb9152cacfe6bd2d831d63f23\",\n  \"itemId\": 4,\n  \"quantity\": 0\n\n};\n\n\nif (flow.get(\"prevFireCount\") != currFire){\n  flow.set(\"prevFireCount\", currFire)\n    \n   // objShapes.restockAmt = currCircle;\n   objShapes.quantity = 1 - currFire;\n   msg.payload = objShapes;\n return msg;\n}\n\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 980,
+        "y": 740,
+        "wires": [
+            [
+                "6607c7c2c912552e",
+                "96c86c5ff38ca854"
+            ]
+        ]
+    },
+    {
+        "id": "07caa63338c5d9f7",
+        "type": "change",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "rules": [
+            {
+                "t": "move",
+                "p": "payload.numFire",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 560,
+        "y": 740,
+        "wires": [
+            [
+                "cba7b74851db86c0"
+            ]
+        ]
+    },
+    {
+        "id": "1f64f17714d9a26c",
+        "type": "debug",
+        "z": "0db769f5d8d5e736",
+        "name": "Fire ID 6",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 980,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "cba7b74851db86c0",
+        "type": "smooth",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "property": "payload",
+        "action": "mean",
+        "count": "10",
+        "round": "0",
+        "mult": "single",
+        "reduce": true,
+        "x": 820,
+        "y": 740,
+        "wires": [
+            [
+                "81852e1c7be8477d",
+                "1f64f17714d9a26c"
+            ]
+        ]
+    },
+    {
+        "id": "d0e79ea94eb9f213",
+        "type": "http request",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://xshapetest.azurewebsites.net/update",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1230,
+        "y": 220,
+        "wires": [
+            [
+                "5ebc2b78a39fb3d2"
+            ]
+        ]
+    },
+    {
+        "id": "2449dcf0cdf186b1",
+        "type": "http request",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://xshapetest.azurewebsites.net/update",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1250,
+        "y": 360,
+        "wires": [
+            [
+                "c185288bbbd821c4"
+            ]
+        ]
+    },
+    {
+        "id": "f9f5c0e863ae1caa",
+        "type": "http request",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://xshapetest.azurewebsites.net/update",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1250,
+        "y": 500,
+        "wires": [
+            [
+                "dc5bdbd1771f9ec6"
+            ]
+        ]
+    },
+    {
+        "id": "ab70769eba4dde25",
+        "type": "http request",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://xshapetest.azurewebsites.net/update",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1250,
+        "y": 620,
+        "wires": [
+            [
+                "49868565377a093c"
+            ]
+        ]
+    },
+    {
+        "id": "96c86c5ff38ca854",
+        "type": "http request",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://xshapetest.azurewebsites.net/update",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1250,
+        "y": 740,
+        "wires": [
+            [
+                "f568694ffa60804e"
+            ]
+        ]
+    },
+    {
+        "id": "25797fb82ca57bf0",
+        "type": "inject",
+        "z": "0db769f5d8d5e736",
+        "name": "Circle 1",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "Circle 2 Heart 2 Square 4 Triangle 4 Beaker 1 Fire 1",
+        "payloadType": "str",
+        "x": 710,
+        "y": 940,
+        "wires": [
+            [
+                "740d88db4d24ecab"
+            ]
+        ]
+    },
+    {
+        "id": "740d88db4d24ecab",
+        "type": "mqtt out",
+        "z": "0db769f5d8d5e736",
+        "name": "",
+        "topic": "deepstream",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "17e802767b1fca24",
+        "x": 1010,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "afdabb85d819b2ce",
+        "type": "debug",
+        "z": "0db769f5d8d5e736",
+        "name": "Circle",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1410,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "5ebc2b78a39fb3d2",
+        "type": "debug",
+        "z": "0db769f5d8d5e736",
+        "name": "Square",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1400,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "c185288bbbd821c4",
+        "type": "debug",
+        "z": "0db769f5d8d5e736",
+        "name": "Heart",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1410,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "dc5bdbd1771f9ec6",
+        "type": "debug",
+        "z": "0db769f5d8d5e736",
+        "name": "Triangle",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1440,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "f568694ffa60804e",
+        "type": "debug",
+        "z": "0db769f5d8d5e736",
+        "name": "Fire",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1450,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "49868565377a093c",
+        "type": "debug",
+        "z": "0db769f5d8d5e736",
+        "name": "Beaker",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1460,
+        "y": 620,
+        "wires": []
+    }
+]
