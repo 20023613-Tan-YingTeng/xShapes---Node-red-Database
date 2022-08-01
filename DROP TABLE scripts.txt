@@ -1,0 +1,21 @@
+ALTER TABLE [dbo].[InventoryItems]  SET ( SYSTEM_VERSIONING = OFF);
+DROP TABLE IF EXISTS [dbo].[InventoryItems];
+DROP TABLE IF EXISTS  [dbo].[InventoryItems_History];
+
+ALTER TABLE [dbo].[Shape]  SET ( SYSTEM_VERSIONING = OFF);
+DROP TABLE IF EXISTS  [dbo].[Shape];
+DROP TABLE IF EXISTS  [dbo].[Shape_History];
+
+ALTER TABLE [dbo].[Product]  SET ( SYSTEM_VERSIONING = OFF);
+DROP TABLE IF EXISTS  [dbo].[Product];
+DROP TABLE IF EXISTS  [dbo].[Product_History];
+
+DROP TABLE IF EXISTS  [dbo].[AssignedInventory];
+
+ALTER TABLE [dbo].[Inventory]  SET ( SYSTEM_VERSIONING = OFF);
+DROP TABLE IF EXISTS  [dbo].[Inventory];
+DROP TABLE IF EXISTS  [dbo].[Inventory_History];
+
+ALTER TABLE [dbo].[Users]  SET ( SYSTEM_VERSIONING = OFF);
+DROP TABLE IF EXISTS  [dbo].[Users];
+DROP TABLE IF EXISTS  [dbo].[Users_History];
